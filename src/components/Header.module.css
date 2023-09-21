@@ -1,0 +1,11 @@
+.headerDiv {    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    background-color: rgba(65, 19, 144, 0.92);    
+}
+
+.headerDiv h2{
+    color: rgb(236, 4, 236);
+}
