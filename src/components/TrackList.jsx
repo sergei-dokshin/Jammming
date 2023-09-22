@@ -5,7 +5,7 @@ import Track from './Track';
 
 
 export default function TrackList(props) {
-    const tracklist = [];
+    
     /* if(props.response !== '') {
         console.log(props.response);
          const arrayTracks = props.response.tracks.items;
@@ -37,12 +37,11 @@ export default function TrackList(props) {
                         artist={ele.artist} 
                         album={ele.album} 
                         img={ele.img}
-                        key={ele.id} 
-                        crossFunc={props.func} />;
+                        key={ele.id}
+                        track={ele}
+                        add={props.add}/>                
                         
-                        tracklist.push(track);
-                        console.log(tracklist);
-                        
+                       
                         return track;
                     })
                     } 

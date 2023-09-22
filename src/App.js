@@ -21,7 +21,17 @@ function App() {
     setSearch(e.target.value);
   }
 
- 
+
+  function addToPlaylist(track) {    
+    let findTrack = tracks.find(ele => ele.id == track.id);    
+    setPlaylist([findTrack, ...playlist]);    
+  } 
+  
+  function removeFromPlaylist(track) {
+    setPlaylist(playlist.filter(ele => ele.id !== track.id));
+  }
+
+
   async function fetchData() {
     const url = `https://spotify23.p.rapidapi.com/search/?q=${search}&type=tracks`;
     const options = {
@@ -36,21 +46,22 @@ function App() {
 	    const response = await fetch(url, options);
 	    const result = await response.json();
 	    setResponse(result);
+      setSearch('');
     } catch (error) {
 	    console.error(error);
     }
       }
       
   
-  
+      
 
   return (
     <div className="App">
       <Header />
       <SearchBar value={search}  func={handleSearch} fetchData={fetchData}/>
       <div className="main">
-        <TrackList response={response} tracks={tracks} />
-        <PlayList />
+        <TrackList response={response} tracks={tracks} add={addToPlaylist} />
+        <PlayList playlist={playlist}  remove={removeFromPlaylist} />
       </div>
       
       
