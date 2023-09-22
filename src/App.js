@@ -9,19 +9,19 @@ function App() {
 
   const [search, setSearch] = useState('');
   const [response, setResponse] = useState('');
-  const [track, setTrack] = useState('');
   const [playlist, setPlaylist] = useState([]);
+  const [tracks, setTracks] = useState([
+    {name: 'Painkiller', artist: 'Judas Priest', album: 'Painkiller', img: 'https://i.scdn.co/image/ab67616d0000485120cac893b7a494f729128dac', id: '77773473525'}, 
+    {name: 'Toxic', artist: 'Britney Spears', album: 'Toxic', img: 'https://i.scdn.co/image/ab67616d0000485120cac893b7a494f729128dac', id: '97899805757'}, 
+    {name: 'Formidable', artist: 'Alex Pachabezian', album: 'Piano Arrangement', img: 'https://i.scdn.co/image/ab67616d0000485120cac893b7a494f729128dac', id: '56454777457'}
+]);
   
-
+  
   function handleSearch(e) {
     setSearch(e.target.value);
   }
 
-  
-  // function addToPlayList(e) {
-  //       setPlaylist((prev) => {}, ...prev);
-  // }
-
+ 
   async function fetchData() {
     const url = `https://spotify23.p.rapidapi.com/search/?q=${search}&type=tracks`;
     const options = {
@@ -49,7 +49,7 @@ function App() {
       <Header />
       <SearchBar value={search}  func={handleSearch} fetchData={fetchData}/>
       <div className="main">
-        <TrackList response={response} />
+        <TrackList response={response} tracks={tracks} />
         <PlayList />
       </div>
       
