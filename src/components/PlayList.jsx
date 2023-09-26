@@ -13,12 +13,13 @@ export default function PlayList({ playlist, remove }) {
                 return <TrackInPlaylist 
                         index={index} 
                         name={ele.name} 
-                        artist={ele.artist} 
-                        album={ele.album} 
-                        img={ele.img}
+                        artist={ele.artists[0].name} 
+                        album={ele.album.name} 
+                        img={ele.album.images[2].url}
                         key={ele.id}
                         track={ele}
                         remove={remove}/>
+                        
              })
             }
             <button>Save to Spotify</button>

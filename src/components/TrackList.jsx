@@ -6,9 +6,9 @@ import Track from './Track';
 
 export default function TrackList(props) {
     
-    /* if(props.response !== '') {
+    if(props.response !== '') {
         console.log(props.response);
-         const arrayTracks = props.response.tracks.items;
+         const arrayTracks = props.response;
          console.log(arrayTracks); 
 
         return (
@@ -17,36 +17,46 @@ export default function TrackList(props) {
                 { arrayTracks.map((ele, index) =>  
                     <Track
                     index={index} 
-                    name={ele.data.name} 
-                    artist={ele.data.artists.items[0].profile.name} 
-                    album={ele.data.albumOfTrack.name} 
-                    img={ele.data.albumOfTrack.coverArt.sources[1].url}
-                    key={ele.data.id} 
-                    crossFunc={props.func} />)
+                    name={ele.name} 
+                    artist={ele.artists[0].name} 
+                    album={ele.album.name} 
+                    img={ele.album.images[2].url}
+                    key={ele.id}
+                    id={ele.id} 
+                    track={ele}
+                    add={props.add}
+                     />)
                 }    
             </div>
-        ) */
-        
-            return (
-                <div className={styles.tracklistDiv} id="tracklist">
-                    <h2>Search Results</h2>
-                    { props.tracks.map((ele, index) =>  {
-                        const track = <Track
-                        index={index} 
-                        name={ele.name} 
-                        artist={ele.artist} 
-                        album={ele.album} 
-                        img={ele.img}
-                        key={ele.id}
-                        track={ele}
-                        add={props.add}/>                
+        )
+            }else{
+                return (
+                    <div className={styles.tracklistDiv} id="tracklist">
+                        <h2>Search Results</h2>
+                           
+                    </div>
+                )
+            }
+            // return (
+            //     <div className={styles.tracklistDiv} id="tracklist">
+            //         <h2>Search Results</h2>
+            //         { props.tracks.map((ele, index) =>  {
+            //             const track = <Track
+            //             index={index} 
+            //             name={ele.name} 
+            //             artist={ele.artist} 
+            //             album={ele.album} 
+            //             img={ele.img}
+            //             key={ele.id}            
+            //             track={ele}
+            //             add={props.add}/>                
                         
                        
-                        return track;
-                    })
-                    } 
-                </div>
-            )
+            //             return track;
+            //         })
+            //         } 
+            //     </div>
+            // )
         
     
 }
