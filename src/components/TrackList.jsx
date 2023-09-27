@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './TrackList.module.css';
 import Track from './Track';
 
@@ -6,26 +6,32 @@ import Track from './Track';
 
 export default function TrackList(props) {
     
-    if(props.response !== '') {
-        console.log(props.response);
-         const arrayTracks = props.response;
-         console.log(arrayTracks); 
+    
+    if(props.response !== '') {        
+        const arrayTracks = props.response;          
 
         return (
             <div className={styles.tracklistDiv} id="tracklist">
                 <h2>Search Results</h2>
-                { arrayTracks.map((ele, index) =>  
+                
+                { arrayTracks.map((ele, index) => 
+                   
                     <Track
-                    index={index} 
-                    name={ele.name} 
-                    artist={ele.artists[0].name} 
-                    album={ele.album.name} 
-                    img={ele.album.images[2].url}
-                    key={ele.id}
-                    id={ele.id} 
-                    track={ele}
-                    add={props.add}
-                     />)
+                        index={index} 
+                        name={ele.name.substring(0,25)} 
+                        artist={ele.artists[0].name} 
+                        album={ele.album.name.substring(0,17)} 
+                        img={ele.album.images[2].url}
+                        sound={ele.preview_url}
+                        toggleSymbol={props.toggleSymbol}
+                        music={props.music}                    
+                        key={ele.id}
+                        id={ele.id} 
+                        track={ele}
+                        add={props.add}
+                        reffer={props.reffer}
+                        setMusic={props.setMusic}
+                    />)                     
                 }    
             </div>
         )
