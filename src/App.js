@@ -11,6 +11,7 @@ function App() {
   const [search, setSearch] = useState('');
   const [responseArray, setResponseArray] = useState('');
   const [playlist, setPlaylist] = useState([]);
+  const [music, setMusic] = useState(false);
   
   /* const [tracks, setTracks] = useState([
     {name: 'Painkiller', artist: 'Judas Priest', album: 'Painkiller', img: 'https://i.scdn.co/image/ab67616d0000485120cac893b7a494f729128dac', id: '77773473525'}, 
@@ -42,19 +43,7 @@ function App() {
     
 
 
-  function handleSearch(e) {
-    setSearch(e.target.value);
-  }
-
-  function addToPlaylist(track) {    
-    let findTrack = responseArray.find(ele => ele.id == track.id);    
-    setPlaylist([findTrack, ...playlist]);    
-  } 
-
-  function removeFromPlaylist(track) {
-    setPlaylist(playlist.filter(ele => ele.id !== track.id));
-  }
-
+  //                           GETTING RESPONSE
   async function fetchData() {
 
       const url = `https://api.spotify.com/v1/search?q=${search}&type=track,artist`;
@@ -77,21 +66,10 @@ function App() {
       }
         }
       
-  const [music, setMusic] = useState(false);
-  const reffer = useRef(null);
   
-  const toggleSymbol = async (track) => {
-    let findTrack = responseArray.find(ele => ele.id == track.id);
-    
-
-    setMusic(!music);
-    
-    
-    if(music) {           
-      reffer.current.pause();      
-    }else{      
-      await reffer.current.play();
-    }   
+//                          HANDLING FUNCTIONS
+  function handleSearch(e) {
+    setSearch(e.target.value);
   }
 
   function addToPlaylist(track) {    
@@ -99,14 +77,20 @@ function App() {
     setPlaylist([findTrack, ...playlist]);    
   } 
 
+  function removeFromPlaylist(track) {
+    setPlaylist(playlist.filter(ele => ele.id !== track.id));
+  }
+  
+  
+
   return (
     <div className="App">
       
       <Header />
       <SearchBar value={search}  func={handleSearch} fetchData={fetchData}/>
       <div className="main">
-        <TrackList response={responseArray} add={addToPlaylist} toggleSymbol={toggleSymbol} music={music} setMusic={setMusic} reffer={reffer}/>
-        <PlayList playlist={playlist}  remove={removeFromPlaylist} />
+        <TrackList response={responseArray} add={addToPlaylist} music={music} setMusic={setMusic} />
+        <PlayList playlist={playlist}  remove={removeFromPlaylist}  music={music} setMusic={setMusic}/>
       </div>
       
       

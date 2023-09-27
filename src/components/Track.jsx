@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import styles from './Track.module.css';
 
 export default function Track(props) {
-    const {index, name, artist, album, img, add, track, sound, toggleSymbol, music,setMusic} = props;
+    const {index, name, artist, album, img, add, track, sound, music, setMusic} = props;
     const reffer = useRef(null);
     
     async function playPause() {
@@ -14,8 +14,7 @@ export default function Track(props) {
                 await reffer.current.play();
             }catch(e){
                 console.log('paused!' + e)
-            }
-            
+            }            
         }
     }
 

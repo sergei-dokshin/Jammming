@@ -28,8 +28,7 @@ export default function TrackList(props) {
                         key={ele.id}
                         id={ele.id} 
                         track={ele}
-                        add={props.add}
-                        reffer={props.reffer}
+                        add={props.add}                        
                         setMusic={props.setMusic}
                     />)                     
                 }    

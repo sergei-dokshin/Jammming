@@ -2,8 +2,8 @@ import React from 'react';
 import styles from './PlayList.module.css';
 import TrackInPlaylist from './TrackInPlaylist';
 
-export default function PlayList({ playlist, remove }) {
-    //console.log("from PlayList.jsx: " + playlist);
+export default function PlayList({ playlist, remove, setMusic, music }) {
+    
     return (
         <div className={styles.playList} id="playlist">
             <h2>Your New Playlist</h2>
@@ -12,13 +12,17 @@ export default function PlayList({ playlist, remove }) {
                         
                 return <TrackInPlaylist 
                         index={index} 
-                        name={ele.name} 
+                        name={ele.name.substring(0,25)} 
                         artist={ele.artists[0].name} 
-                        album={ele.album.name} 
+                        album={ele.album.name.substring(0,17)} 
                         img={ele.album.images[2].url}
+                        sound={ele.preview_url}
                         key={ele.id}
                         track={ele}
-                        remove={remove}/>
+                        remove={remove}
+                        setMusic={setMusic}
+                        music={music}
+                        />
                         
              })
             }
