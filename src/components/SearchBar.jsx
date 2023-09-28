@@ -7,8 +7,9 @@ export default function SearchBar(props) {
         <div className={styles.searchDiv} id="searchbar">
             <input 
             type="text" 
-            value={props.value} 
-            onChange={props.func} 
+            value={props.value}
+            placeholder='Search for artist / track'
+            onChange={props.handleSearch} 
             onKeyUp={(e) => {
                 if(e.key == "Enter") {
                     const run = props.fetchData;                    

@@ -7,21 +7,27 @@
 input {    
     width: 25%;
     height: 40px;
-    border-radius: 30px;
+    border-radius: 10px;
+    border: 2px solid rgb(13, 0, 13);
     margin-top: 30px;
+    background-color: rgb(79, 22, 140);
+    color: bisque;
+    text-align: center;
+    font-size: 20px;
 }
 
 button {
-  padding: 15px 30px;
+  padding: 12px 30px;
   margin-top: 30px;
   margin-bottom: 50px;
-  border: 1px solid rgba(255, 255, 255, 0);
+  border: 2px solid rgba(255, 255, 255, 0);
   border-radius: 30px;
-  background-color: rgba(253, 253, 253, 0.893);
+  background-color: rgba(253, 253, 253, 0.985);
 }
 
   button:hover {
     cursor: pointer;
+    border: 2px solid rgb(255, 255, 255);
   }
   
 

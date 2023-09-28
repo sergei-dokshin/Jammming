@@ -2,11 +2,17 @@ import React from 'react';
 import styles from './PlayList.module.css';
 import TrackInPlaylist from './TrackInPlaylist';
 
-export default function PlayList({ playlist, remove, setMusic, music }) {
+export default function PlayList({ playlist, remove, setMusic, music, playlistHeader, handlePlaylistHeader, requestAuth, createPlaylist }) {
     
     return (
         <div className={styles.playList} id="playlist">
-            <h2>Your New Playlist</h2>
+            <input 
+                type="text"
+                value={playlistHeader}
+                placeholder='Name of your new playlist'
+                onChange={handlePlaylistHeader} 
+                className={styles.input}               
+                ></input>
             
             { playlist.map((ele, index) =>  {
                         
@@ -26,7 +32,8 @@ export default function PlayList({ playlist, remove, setMusic, music }) {
                         
              })
             }
-            <button>Save to Spotify</button>
+            <button onClick={requestAuth}>Authorize</button>
+            <button onClick={createPlaylist}>Save to Spotify</button>
         </div>
     );
 }
