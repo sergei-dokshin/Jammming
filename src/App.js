@@ -4,6 +4,8 @@ import PlayList from './components/PlayList';
 import SearchBar from './components/SearchBar';
 import TrackList from './components/TrackList';
 import Header from './components/Header';
+import queryString from 'query-string';
+import axios from 'axios';
 
 function App() {
 
@@ -13,19 +15,19 @@ function App() {
   const [responseArray, setResponseArray] = useState('');
   const [playlist, setPlaylist] = useState([]);
   const [music, setMusic] = useState(false);
-  
+
   /* const [tracks, setTracks] = useState([
     {name: 'Painkiller', artist: 'Judas Priest', album: 'Painkiller', img: 'https://i.scdn.co/image/ab67616d0000485120cac893b7a494f729128dac', id: '77773473525'}, 
     {name: 'Toxic', artist: 'Britney Spears', album: 'Toxic', img: 'https://i.scdn.co/image/ab67616d0000485120cac893b7a494f729128dac', id: '97899805757'}, 
     {name: 'Formidable', artist: 'Alex Pachabezian', album: 'Piano Arrangement', img: 'https://i.scdn.co/image/ab67616d0000485120cac893b7a494f729128dac', id: '56454777457'}
 ]); */
-  
-//                          Getting access TOKEN
- 
+
+  //                          Getting access TOKEN
+
   useEffect(() => {
-    
+
     const client_id = "44a2eeebcd05452fb85455ce497c3779";
-    const client_secret = "23bb778bf4ff4f3cabcdb18feb6f3f19";    
+    const client_secret = "23bb778bf4ff4f3cabcdb18feb6f3f19";
     const requestParameters = {
       method: "POST",
       headers: {
@@ -38,35 +40,35 @@ function App() {
       .then(data => setAccessToken(data["access_token"]))
       .catch(e => {
         console.log("Unable to get TOKEN: " + e);
-      })    
-  },[]);
-    
+      })
+  }, []);
+
 
 
   //                           GETTING RESPONSE
   async function fetchData() {
 
-      const url = `https://api.spotify.com/v1/search?q=${search}&type=track,artist`;
-      const options = {
-        method: 'GET',
-        headers: {
-    	    Authorization:  "Bearer " + accessToken 
-        }
-      };
-  
-      try {
-        const response = await fetch(url, options);
-        const result = await response.json();        
-        setResponseArray(result.tracks.items);
-        setSearch('');
-        
-      } catch (error) {
-        console.error(error);
+    const url = `https://api.spotify.com/v1/search?q=${search}&type=track,artist`;
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: "Bearer " + accessToken
       }
-        }
-      
-  
-//                          HANDLING FUNCTIONS
+    };
+
+    try {
+      const response = await fetch(url, options);
+      const result = await response.json();
+      setResponseArray(result.tracks.items);
+      setSearch('');
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  //                          HANDLING FUNCTIONS
   function handleSearch(e) {
     setSearch(e.target.value);
   }
@@ -75,15 +77,19 @@ function App() {
     setPlaylistHeader(e.target.value);
   }
 
-  function addToPlaylist(track) {    
-    let findTrack = responseArray.find(ele => ele.id == track.id);    
-    setPlaylist([findTrack, ...playlist]);    
-  } 
+  function addToPlaylist(track) {
+    let findTrack = responseArray.find(ele => ele.id == track.id);
+    setPlaylist([findTrack, ...playlist]);
+  }
 
   function removeFromPlaylist(track) {
     setPlaylist(playlist.filter(ele => ele.id !== track.id));
   }
-  
+
+
+
+
+
   //                            AUTHORIZATION
   function requestAuth() {
     let url = 'https://accounts.spotify.com/authorize?';
@@ -95,100 +101,126 @@ function App() {
     url += "&scope=playlist-modify-public playlist-modify-private";
     window.location.href = url;
   }
-  
+
   let AuthCode = '';
   useEffect(() => {    
     getAuthCode();
-    console.log("useEffect: " + AuthCode);
     callAuthorizationApi();
+    console.log("Auth code: " + AuthCode);
   }, []);
-
   
+
   async function getAuthCode() {
-    
-    if(window.location.search.length > 0) {
-      const search = window.location.search;    
+
+    if (window.location.search.length > 0) {
+      const search = window.location.search;
       const getParam = new URLSearchParams(search);
       AuthCode = getParam.get('code');
-    }    
+    }
   }
-  
-  //            НЕПОНЯТНАЯ ШЛЯПА. АВТОРИЗАЦИЯ ПРОДОЛЖАЕТСЯ
-  
-  
+
+  //             АВТОРИЗАЦИЯ ПРОДОЛЖАЕТСЯ. Получаем еще один access_token  
+ 
 
   function callAuthorizationApi() {
     let body = `grant_type=authorization_code&code=${AuthCode}&redirect_uri=http://localhost:3000/&client_id=44a2eeebcd05452fb85455ce497c3779&client_secret=23bb778bf4ff4f3cabcdb18feb6f3f19`;
+    
     let xhr = new XMLHttpRequest();
     xhr.open('POST', 'https://accounts.spotify.com/api/token', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.setRequestHeader('Authorization', 'Basic ' + btoa('44a2eeebcd05452fb85455ce497c3779:23bb778bf4ff4f3cabcdb18feb6f3f19'));
-    console.log("body: " + body);
+
     xhr.send(body);
     xhr.onload = handleAuthResponse;
+
+
   }
 
+
+  //var access_token = '';
+  
+
+
   const [access_token, setAccess_token] = useState('');
+  console.log("access_token_free: " + access_token);
+  //const [data, setData] = useState('blob');
+  const [status, setStatus] = useState('blob');
+  
+  var data = 'blob';
+  
 
   function handleAuthResponse() {
-    // var access_token = '';
-    // var refresh_token = '';
-    if(this.status == 200) {
-      var data = JSON.parse(this.responseText);
-      console.log(data);
-      if(data.access_token != undefined) {
+    
+    if (this.status == 200) {
+      //setData(JSON.parse(this.responseText));
+      data = JSON.parse(this.responseText);
+      setStatus('m');
+      console.log("data: " + data);
+      if (data.access_token != undefined) {
         //access_token = data.access_token;
         setAccess_token(data.access_token);
-        console.log(access_token);
+        console.log("access_token: " + access_token);
         //localStorage.setItem('access_token', access_token);
       }
       // if(data.refresh_token != undefined) {
       //   refresh_token = data.refresh_token;
       //   //localStorage.setItem('refresh_token', refresh_token);
       // }
-    }else{
-      console.log(this.responseText);
+    } else {
+      console.log("responseText: " + this.responseText);
     }
   }
 
-  
 
 
 
 
+  //async function callAuthApi() {
+
+  //                                 axios.post
+  // const body = queryString.stringify({        
+  //   code: AuthCode,
+  //   redirect_uri: 'http://localhost:3000/',
+  //   grant_type: "client_credentials"      
+  // });
 
 
-
-
-
-
-  // async function callAuthApi() {
-  //   const params = {
-  //     method: 'POST',
+  // await axios.post(
+  //   'https://accounts.spotify.com/api/token',
+  //   body,
+  //   {
   //     headers: {
-  //       'Content-Type': 'application/x-www-form-urlencoded',
-  //       Authorization: `Basic` + btoa('44a2eeebcd05452fb85455ce497c3779:23bb778bf4ff4f3cabcdb18feb6f3f19')
+  //       Authorization: `Basic` + btoa('44a2eeebcd05452fb85455ce497c3779:23bb778bf4ff4f3cabcdb18feb6f3f19'),
+  //       "Content-Type": "application/x-www-form-urlencoded",
   //     },
-  //     body: {
-  //       'grant_type': 'authorization_code',
-  //       'code': AuthCode,
-  //       'redirect_uri': 'http://localhost:3000/',
-  //       'client_id': '44a2eeebcd05452fb85455ce497c3779'
-  //     }
   //   }
-  //   try{
-  //     const response = await fetch('https://accounts.spotify.com/api/token', params);
-  //     //const data = response.json();
-  //     console.log(response);
-  //   }catch(e){
-  //     console.log('ERROR: ' + e)
-  //   }
-    
+  // ).then((response) => {
+  //   console.log(response);
+  // })
+  // .catch((error) => {
+  //   console.log(error);
+  // });
+
+  //                               await fetch
+  // const params = {
+  //   method: 'POST',      
+  //   headers: {
+  //     'Content-Type': 'application/x-www-form-urlencoded',
+  //     Authorization: `Basic` + btoa('44a2eeebcd05452fb85455ce497c3779:23bb778bf4ff4f3cabcdb18feb6f3f19')
+  //   },
+  //    body:{ body }
+
+
+  // }
+  // try{
+  //   const response = await fetch('https://accounts.spotify.com/api/token', params);
+  //   const data = response.json();
+  //   console.log(data);
+  // }catch(e){
+  //   console.log('ERROR: ' + e)
   // }
 
-
-
-
+  // }
 
 
 
@@ -197,40 +229,65 @@ function App() {
     const param = {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",        
+        "Content-Type": "application/json",
         "Authorization": `Bearer ${access_token}`
-        
-
       },
       body: JSON.stringify({
         "name": playlistHeader,
         "public": false,
         "description": "Created with Jammming"
-        
       })
     }
-    
-    try{
-      console.log("access_token: " + access_token);
-      await fetch(`https://api.spotify.com/v1/users/${user_id}/playlists`, param);
+
+
+    let arrayOfURIs = [];
+    function getURIs() {
+      arrayOfURIs = playlist.map((ele) => ele.uri);
+    }
+
+    getURIs();
+
+    const paramAddTracks = {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${access_token}`
+      },
+      body: JSON.stringify({
+        "uris": arrayOfURIs
+      })
+    }
+
+    try {
+      console.log("user_id: " + user_id);
+      console.log(param);
+      const response = await fetch(`https://api.spotify.com/v1/users/${user_id}/playlists`, param);
+      const data = await response.json();
+      const playlistId = data.id;
+
+      await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, paramAddTracks);
       
-    }catch(e){
+      alert('The playlist has been created!');
+
+    } catch (e) {
       console.log("Unable to create Playlist. Reason: " + e);
     }
   }
-  
+
+
   return (
+    status !== 'blob' ?
     <div className="App">
-      
       <Header />
-      <SearchBar value={search}  handleSearch={handleSearch} fetchData={fetchData}/>
+      <SearchBar value={search} handleSearch={handleSearch} fetchData={fetchData} data={data} requestAuth={requestAuth}/>
       <div className="main">
         <TrackList response={responseArray} add={addToPlaylist} music={music} setMusic={setMusic} />
-        <PlayList playlist={playlist}  remove={removeFromPlaylist}  music={music} setMusic={setMusic} playlistHeader={playlistHeader} handlePlaylistHeader={handlePlaylistHeader} requestAuth={requestAuth} createPlaylist={createPlaylist}/>
+        <PlayList playlist={playlist} remove={removeFromPlaylist} music={music} setMusic={setMusic} playlistHeader={playlistHeader} handlePlaylistHeader={handlePlaylistHeader} requestAuth={requestAuth} createPlaylist={createPlaylist} />
       </div>
-      
-      
-      
+    </div>
+    :
+    <div className="Authorize" id="searchbar">
+        <button onClick={requestAuth}>Authorize</button>
     </div>
   );
 }

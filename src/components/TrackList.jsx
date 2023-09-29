@@ -23,7 +23,7 @@ export default function TrackList(props) {
                         album={ele.album.name.substring(0,17)} 
                         img={ele.album.images[2].url}
                         sound={ele.preview_url}
-                        toggleSymbol={props.toggleSymbol}
+                        uri={ele.uri}                        
                         music={props.music}                    
                         key={ele.id}
                         id={ele.id} 

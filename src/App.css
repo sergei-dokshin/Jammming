@@ -13,6 +13,16 @@ body {
   " footer footer";  
 }
 
+.Authorize {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Authorize button {
+  margin-top: 100px;
+}
+
 #header {
   grid-area: header;
 }
