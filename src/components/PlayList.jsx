@@ -3,8 +3,7 @@ import styles from './PlayList.module.css';
 import TrackInPlaylist from './TrackInPlaylist';
 
 export default React.memo(
-    function PlayList({ playlist, remove, setMusic, music, playlistHeader, handlePlaylistHeader, createPlaylist, data, playPause }) {
-    console.log(data);
+    function PlayList({ playlist, remove, setMusic, music, playlistHeader, handlePlaylistHeader, createPlaylist, data, playPause }) {    
     return (
         <div className={styles.playList} id="playlist">
                 <input
