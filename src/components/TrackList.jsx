@@ -31,6 +31,7 @@ export default React.memo(
                         track={ele}
                         add={props.add}                        
                         setMusic={props.setMusic}
+                        playPause={props.playPause}
                     />)                     
                 }    
             </div>

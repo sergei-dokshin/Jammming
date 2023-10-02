@@ -2,21 +2,10 @@ import React, {useRef} from 'react';
 import styles from './Track.module.css';
 
 export default function Track(props) {
-    const {index, name, artist, album, img, add, track, sound, music, setMusic} = props;
+    const {index, name, artist, album, img, add, track, sound, music, playPause} = props;
     const reffer = useRef(null);
     
-    async function playPause() {
-        setMusic(!music);
-        if(music) {
-            reffer.current.pause();
-        }else{
-            try{
-                await reffer.current.play();
-            }catch(e){
-                console.log('paused!' + e)
-            }            
-        }
-    }
+   
 
     return (
         <div className={styles.trackDiv}> 
@@ -27,8 +16,8 @@ export default function Track(props) {
             <h6>{album}</h6>
             <div className={styles.imgAlbum}>
                 {!music ? (
-                    <span id="playbutton" className={styles.Symbol} onClick={() => playPause()}>►</span>) : (
-                    <span id="pausebutton" className={styles.Symbol} onClick={() => playPause()}>॥</span>
+                    <span id="playbutton" className={styles.Symbol} onClick={() => playPause(reffer)}>►</span>) : (
+                    <span id="pausebutton" className={styles.Symbol} onClick={() => playPause(reffer)}>॥</span>
                 )}
                 <img src={img} />
                 </div>            

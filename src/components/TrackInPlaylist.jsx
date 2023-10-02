@@ -28,8 +28,8 @@ export default function TrackInPlaylist(props) {
             <h6>{album}</h6>
             <div className={styles.imgAlbum}>
                 {!music ? (
-                    <span id="playbutton" className={styles.Symbol} onClick={() => playPause()}>►</span>) : (
-                    <span id="pausebutton" className={styles.Symbol} onClick={() => playPause()}>॥</span>
+                    <span id="playbutton" className={styles.Symbol} onClick={() => playPause(reffer)}>►</span>) : (
+                    <span id="pausebutton" className={styles.Symbol} onClick={() => playPause(reffer)}>॥</span>
                 )}
             <img src={img} />
             </div>            

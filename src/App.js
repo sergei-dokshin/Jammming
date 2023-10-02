@@ -82,6 +82,18 @@ function App() {
   }
 
 
+  async function playPause(reffer) {
+    setMusic(!music);
+    if(music) {
+        reffer.current.pause();
+    }else{
+        try{
+            await reffer.current.play();
+        }catch(e){
+            console.log('paused!' + e)
+        }            
+    }
+}
 
 
 
@@ -161,10 +173,6 @@ function App() {
   }
 
 
-
-
-
-  
   async function createPlaylist() {
     const user_id = "3143qbvhf3iu6jkeoyy4z77jsxlu";
     const param = {
@@ -222,8 +230,8 @@ function App() {
       <Header />
       <SearchBar value={search} handleSearch={handleSearch} fetchData={fetchData} data={data} requestAuth={requestAuth}/>
       <div className="main">
-        <TrackList response={responseArray} add={addToPlaylist} music={music} setMusic={setMusic} />
-        <PlayList playlist={playlist} remove={removeFromPlaylist} music={music} setMusic={setMusic} playlistHeader={playlistHeader} handlePlaylistHeader={handlePlaylistHeader} requestAuth={requestAuth} createPlaylist={createPlaylist} />
+        <TrackList response={responseArray} add={addToPlaylist} music={music} setMusic={setMusic} playPause={playPause} />
+        <PlayList playlist={playlist} remove={removeFromPlaylist} music={music} setMusic={setMusic} playlistHeader={playlistHeader} handlePlaylistHeader={handlePlaylistHeader} requestAuth={requestAuth} createPlaylist={createPlaylist} playPause={playPause} />
       </div>
     </div>
     :
