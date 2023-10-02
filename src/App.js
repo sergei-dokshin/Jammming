@@ -16,11 +16,6 @@ function App() {
   const [playlist, setPlaylist] = useState([]);
   const [music, setMusic] = useState(false);
 
-  /* const [tracks, setTracks] = useState([
-    {name: 'Painkiller', artist: 'Judas Priest', album: 'Painkiller', img: 'https://i.scdn.co/image/ab67616d0000485120cac893b7a494f729128dac', id: '77773473525'}, 
-    {name: 'Toxic', artist: 'Britney Spears', album: 'Toxic', img: 'https://i.scdn.co/image/ab67616d0000485120cac893b7a494f729128dac', id: '97899805757'}, 
-    {name: 'Formidable', artist: 'Alex Pachabezian', album: 'Piano Arrangement', img: 'https://i.scdn.co/image/ab67616d0000485120cac893b7a494f729128dac', id: '56454777457'}
-]); */
 
   //                          Getting access TOKEN
 
@@ -137,10 +132,7 @@ function App() {
   }
 
 
-  //var access_token = '';
   
-
-
   const [access_token, setAccess_token] = useState('');
   console.log("access_token_free: " + access_token);
   //const [data, setData] = useState('blob');
@@ -157,15 +149,12 @@ function App() {
       setStatus('m');
       console.log("data: " + data);
       if (data.access_token != undefined) {
-        //access_token = data.access_token;
+        
         setAccess_token(data.access_token);
         console.log("access_token: " + access_token);
-        //localStorage.setItem('access_token', access_token);
+        
       }
-      // if(data.refresh_token != undefined) {
-      //   refresh_token = data.refresh_token;
-      //   //localStorage.setItem('refresh_token', refresh_token);
-      // }
+     
     } else {
       console.log("responseText: " + this.responseText);
     }
@@ -175,55 +164,7 @@ function App() {
 
 
 
-  //async function callAuthApi() {
-
-  //                                 axios.post
-  // const body = queryString.stringify({        
-  //   code: AuthCode,
-  //   redirect_uri: 'http://localhost:3000/',
-  //   grant_type: "client_credentials"      
-  // });
-
-
-  // await axios.post(
-  //   'https://accounts.spotify.com/api/token',
-  //   body,
-  //   {
-  //     headers: {
-  //       Authorization: `Basic` + btoa('44a2eeebcd05452fb85455ce497c3779:23bb778bf4ff4f3cabcdb18feb6f3f19'),
-  //       "Content-Type": "application/x-www-form-urlencoded",
-  //     },
-  //   }
-  // ).then((response) => {
-  //   console.log(response);
-  // })
-  // .catch((error) => {
-  //   console.log(error);
-  // });
-
-  //                               await fetch
-  // const params = {
-  //   method: 'POST',      
-  //   headers: {
-  //     'Content-Type': 'application/x-www-form-urlencoded',
-  //     Authorization: `Basic` + btoa('44a2eeebcd05452fb85455ce497c3779:23bb778bf4ff4f3cabcdb18feb6f3f19')
-  //   },
-  //    body:{ body }
-
-
-  // }
-  // try{
-  //   const response = await fetch('https://accounts.spotify.com/api/token', params);
-  //   const data = response.json();
-  //   console.log(data);
-  // }catch(e){
-  //   console.log('ERROR: ' + e)
-  // }
-
-  // }
-
-
-
+  
   async function createPlaylist() {
     const user_id = "3143qbvhf3iu6jkeoyy4z77jsxlu";
     const param = {

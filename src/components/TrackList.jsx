@@ -4,7 +4,8 @@ import Track from './Track';
 
 
 
-export default function TrackList(props) {
+export default React.memo(
+    function TrackList(props) {
     
     
     if(props.response !== '') {        
@@ -42,26 +43,6 @@ export default function TrackList(props) {
                     </div>
                 )
             }
-            // return (
-            //     <div className={styles.tracklistDiv} id="tracklist">
-            //         <h2>Search Results</h2>
-            //         { props.tracks.map((ele, index) =>  {
-            //             const track = <Track
-            //             index={index} 
-            //             name={ele.name} 
-            //             artist={ele.artist} 
-            //             album={ele.album} 
-            //             img={ele.img}
-            //             key={ele.id}            
-            //             track={ele}
-            //             add={props.add}/>                
-                        
-                       
-            //             return track;
-            //         })
-            //         } 
-            //     </div>
-            // )
-        
+                    
     
-}
+});
