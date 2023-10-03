@@ -19,8 +19,7 @@ export default React.memo(
                     return <TrackInPlaylist
                         index={index}
                         name={ele.name.substring(0, 25)}
-                        artist={ele.artists[0].name}
-                        album={ele.album.name.substring(0, 17)}
+                        artist={ele.artists[0].name}                        
                         img={ele.album.images[2].url}
                         sound={ele.preview_url}
                         uri={ele.uri}

@@ -11,7 +11,7 @@
     margin-bottom: 100px;
 }
 
-.tracklistDiv h2 {
+.tracklistDiv .results {
     width: 90%;
     border-radius: 10px;
     color: rgb(202, 1, 202);
@@ -21,5 +21,6 @@
     text-align: center;
     margin: 15px auto;
     padding: 5px;
+    caret-color: transparent;
 }
 

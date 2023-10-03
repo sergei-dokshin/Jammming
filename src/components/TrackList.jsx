@@ -13,15 +13,14 @@ export default React.memo(
 
         return (
             <div className={styles.tracklistDiv} id="tracklist">
-                <h2>Search Results</h2>
+            <h2 className={styles.results}>Search Results</h2>
                 
                 { arrayTracks.map((ele, index) => 
                    
                     <Track
                         index={index} 
                         name={ele.name.substring(0,25)} 
-                        artist={ele.artists[0].name} 
-                        album={ele.album.name.substring(0,17)} 
+                        artist={ele.artists[0].name}                         
                         img={ele.album.images[2].url}
                         sound={ele.preview_url}
                         uri={ele.uri}                        

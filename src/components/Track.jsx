@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import styles from './Track.module.css';
 
 export default function Track(props) {
-    const {index, name, artist, album, img, add, track, sound, music, playPause} = props;
+    const {index, name, artist, img, add, track, sound, music, playPause} = props;
     const reffer = useRef(null);
     
    
@@ -12,8 +12,7 @@ export default function Track(props) {
             <audio src={sound} ref={reffer} ></audio>                               
             <span className={styles.spanNumber}>{index + 1}</span>
             <h4>{`${name}`}</h4>
-            <p>{artist}</p>
-            <h6>{album}</h6>
+            <p className={styles.artist}>{artist}</p>            
             <div className={styles.imgAlbum}>
                 {!music ? (
                     <span id="playbutton" className={styles.Symbol} onClick={() => playPause(reffer)}>►</span>) : (
@@ -22,7 +21,7 @@ export default function Track(props) {
                 <img src={img} />
                 </div>            
             <div className={styles.plus} >
-                <p onClick={() => add(track)} className={styles.cross}>+<span className={styles.add}>Add to Playlist</span></p>
+                <h2 onClick={() => add(track)} className={styles.cross}>+<span className={styles.add}>Add to Playlist</span></h2>
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './SearchBar.module.css';
 
-export default function SearchBar({ value, handleSearch, fetchData }) {
+export default function SearchBar({ value, handleSearch, Search }) {
 
     return (
 
@@ -12,12 +12,11 @@ export default function SearchBar({ value, handleSearch, fetchData }) {
                 placeholder='Search for artist / track'
                 onChange={handleSearch}
                 onKeyUp={(e) => {
-                    if (e.key == "Enter") {
-                        const run = fetchData;
-                        run();
+                    if (e.key == "Enter") {                        
+                        Search();
                     }
                 }} />
-            <button onClick={fetchData}>Search Tracks</button>
+            <button onClick={Search}>Search Tracks</button>
         </div>
     );
 }

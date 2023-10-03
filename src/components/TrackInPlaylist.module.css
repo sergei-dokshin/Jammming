@@ -1,9 +1,9 @@
 .trackDiv {   
     display: grid; 
     grid-template-areas: 
-    " number track  track img minus "
-    "   .    artist album img minus ";
-    grid-template-columns: 6% 39% 29% 13% 13%;    
+    " number  track  img minus "
+    "   .     artist img minus ";
+    grid-template-columns: 6% 64% 15% 15%;    
     flex-wrap: wrap;   
     border: 2px solid purple;
     border-radius: 5px;
@@ -24,6 +24,7 @@
     grid-area: track;
     margin: 5px;
     font-size: 17px;
+    caret-color: transparent;
 }
 
 .trackDiv p {
@@ -32,6 +33,7 @@
     grid-area: artist;
     font-size: 12px;    
     margin: 5px;
+    caret-color: transparent;
 }
 
 .imgAlbum {
@@ -42,8 +44,8 @@
 }
 
 .imgAlbum img {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     overflow: hidden;
     
 }
@@ -61,46 +63,34 @@
 }
 
 
-
-.trackDiv h6 {
-    grid-area: album;
-    display: flex;
-    align-items: end;
-    justify-content: end;
-    margin: 5px 8px 5px 5px;
-    text-align: right; 
-    color: rgb(152, 151, 151);
-    font-size: 12px;   
-}
-
-.trackDiv .minus {
+.minus {
     grid-area: minus;    
     display: flex;
-    align-items: center;
     justify-content: center;
-    
+    align-items: center;    
 }
 
-.minus .line {             
-    width: 27px;
-    height: 27px;     
-    padding: 4px;
-    border-radius: 50%;     
-    font-size: larger;
+.minus .line {            
+    margin: 0;
+    padding: 5px;
+    caret-color: transparent;     
 }
 
-.trackDiv .minus p:hover {
-    background-color: rgba(236, 4, 236, 0.457);
+.minus .line:hover {       
     cursor: pointer;     
-    
+    color: rgb(236, 4, 236);
 }
 
-.trackDiv .add {
+.minus .line:active {
+    color: rgb(144, 0, 144);
+}
+
+.minus .add {
     position: absolute;
     margin-left: 44px;    
     visibility: hidden;
     z-index: 2;
-    font-size: 18px;
+    font-size: 16px;
     background-color: rgba(0, 0, 0, 0.745);
     color: #fff;
     text-align: center;
@@ -118,3 +108,7 @@
     color: grey;
     margin: 5px;
 }
+
+
+
+/*---------------------------------------------------------------*/

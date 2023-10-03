@@ -9,7 +9,6 @@ import axios from 'axios';
 
 function App() {
 
-  //const [accessToken, setAccessToken] = useState('');
   const [search, setSearch] = useState('');
   const [playlistHeader, setPlaylistHeader] = useState('');
   const [responseArray, setResponseArray] = useState('');
@@ -34,7 +33,7 @@ function App() {
     url += "&scope=playlist-modify-public playlist-modify-private";
     window.location.href = url;
   }
-  //                         ------------ REFACTOR ------------
+  //              ------------ GET ACCSESS TOKEN(after authorization) ------------
 
   async function getAccessToken(code) {
     const body = `grant_type=authorization_code&code=${code}&redirect_uri=http://localhost:3000/&client_id=44a2eeebcd05452fb85455ce497c3779&client_secret=23bb778bf4ff4f3cabcdb18feb6f3f19`;
@@ -48,11 +47,11 @@ function App() {
         },
         body: body
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP Error! Status: ${response.status}`);
       }
-  
+
       const data = await response.json();
       setAccess_token(data.access_token);
       setStatus('m');
@@ -60,8 +59,6 @@ function App() {
       console.error('GetAccessToken Error:', error);
     }
   }
-
-
 
 
   async function callAuthorizationApi() {
@@ -72,65 +69,13 @@ function App() {
       AuthCode = getParam.get('code');
     }
     //console.log("Auth code: " + AuthCode);
-
-    getAccessToken(AuthCode);    
-    
-    
-    
-    // let body = `grant_type=authorization_code&code=${AuthCode}&redirect_uri=http://localhost:3000/&client_id=44a2eeebcd05452fb85455ce497c3779&client_secret=23bb778bf4ff4f3cabcdb18feb6f3f19`;
-
-    // let xhr = new XMLHttpRequest();
-    // xhr.open('POST', 'https://accounts.spotify.com/api/token', true);
-    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    // xhr.setRequestHeader('Authorization', 'Basic ' + btoa('44a2eeebcd05452fb85455ce497c3779:23bb778bf4ff4f3cabcdb18feb6f3f19'));
-
-    // xhr.send(body);
-    // xhr.onload = handleAuthResponse;
-
+    getAccessToken(AuthCode);
   }
 
 
-  function handleAuthResponse() {
-    let data = '';
-    if (this.status == 200) {
-      data = JSON.parse(this.responseText);
-      console.log("DATA: " + data);
-      setStatus('m');
+  //                ------------- GETTING SEARCH RESPONSE -------------
 
-      if (data.access_token != undefined) {
-        setAccess_token(data.access_token);
-        console.log("access_token: " + access_token);
-      }
-    } else {
-      console.log("responseText: " + this.responseText);
-    }
-  }
-
-  //                          Getting access TOKEN
-
-  // useEffect(() => {
-
-  //   const client_id = "44a2eeebcd05452fb85455ce497c3779";
-  //   const client_secret = "23bb778bf4ff4f3cabcdb18feb6f3f19";
-  //   const requestParameters = {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/x-www-form-urlencoded"
-  //     },
-  //     body: `grant_type=client_credentials&client_id=${client_id}&client_secret=${client_secret}`
-  //   }
-  //   fetch("https://accounts.spotify.com/api/token", requestParameters)
-  //     .then(response => response.json())
-  //     .then(data => setAccessToken(data["access_token"]))
-  //     .catch(e => {
-  //       console.log("Unable to get TOKEN: " + e);
-  //     })
-  // }, []);
-
-
-
-  //                           GETTING RESPONSE
-  async function fetchData() {
+  async function Search() {
 
     const url = `https://api.spotify.com/v1/search?q=${search}&type=track,artist`;
     const options = {
@@ -152,7 +97,8 @@ function App() {
   }
 
 
-  //                          HANDLING FUNCTIONS
+  //                   -------------   HANDLING FUNCTIONS -------------
+
   function handleSearch(e) {
     setSearch(e.target.value);
   }
@@ -184,6 +130,8 @@ function App() {
     }
   }
 
+  //                     ------------- CREATING PLAYLIST -------------
+
   async function createPlaylist() {
     const param = {
       method: "POST",
@@ -197,7 +145,6 @@ function App() {
         "description": "Created with Jammming"
       })
     }
-
 
     let arrayOfURIs = [];
     function getURIs() {
@@ -232,13 +179,13 @@ function App() {
   }
 
 
-
+//                        ------------- RETURN ------------- 
 
   return (
     status !== 'blob' ?
       <div className="App">
         <Header />
-        <SearchBar value={search} handleSearch={handleSearch} fetchData={fetchData} />
+        <SearchBar value={search} handleSearch={handleSearch} Search={Search} />
         <div className="main">
           <TrackList response={responseArray} add={addToPlaylist} music={music} setMusic={setMusic} playPause={playPause} />
           <PlayList playlist={playlist} remove={removeFromPlaylist} music={music} setMusic={setMusic} playlistHeader={playlistHeader} handlePlaylistHeader={handlePlaylistHeader} requestAuth={requestAuth} createPlaylist={createPlaylist} playPause={playPause} />
