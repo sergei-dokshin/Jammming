@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import './App.css';
 import PlayList from './components/PlayList';
 import SearchBar from './components/SearchBar';
@@ -116,86 +116,97 @@ function App() {
     setPlaylist(playlist.filter(ele => ele.id !== track.id));
   }
 
-
-  async function playPause(reffer) {
-    setMusic(!music);
-    if (music) {
+  const [currentPlay, setCurrentPlay] = useState(null);
+  const reffer = useRef(null);
+  
+  useEffect(() => {
+    if (!music && currentPlay !== null) {
       reffer.current.pause();
-    } else {
+    } 
+    else if(music && currentPlay !== null){
       try {
-        await reffer.current.play();
+        reffer.current.play();
       } catch (e) {
-        console.log('paused!' + e)
+        console.log('cannot play music! - ' + e)
       }
     }
+  }, [music]);
+
+  function playPause(track) {    
+    let findTrack = playlist.find(ele => ele.id == track.id);
+    setCurrentPlay(findTrack);
+    setMusic(!music);
   }
 
-  //                     ------------- CREATING PLAYLIST -------------
 
-  async function createPlaylist() {
-    const param = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${access_token}`
-      },
-      body: JSON.stringify({
-        "name": playlistHeader,
-        "public": false,
-        "description": "Created with Jammming"
-      })
-    }
 
-    let arrayOfURIs = [];
-    function getURIs() {
-      arrayOfURIs = playlist.map((ele) => ele.uri);
-    }
+//                     ------------- CREATING PLAYLIST -------------
 
-    getURIs();
-
-    const paramAddTracks = {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${access_token}`
-      },
-      body: JSON.stringify({
-        "uris": arrayOfURIs
-      })
-    }
-
-    try {
-      const response = await fetch(`https://api.spotify.com/v1/users/3143qbvhf3iu6jkeoyy4z77jsxlu/playlists`, param);
-      const data = await response.json();
-      const playlistId = data.id;
-
-      await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, paramAddTracks);
-
-      alert('The playlist has been created!');
-
-    } catch (e) {
-      console.log("Unable to create Playlist. Reason: " + e);
-    }
+async function createPlaylist() {
+  const param = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${access_token}`
+    },
+    body: JSON.stringify({
+      "name": playlistHeader,
+      "public": false,
+      "description": "Created with Jammming"
+    })
   }
+
+  let arrayOfURIs = [];
+  function getURIs() {
+    arrayOfURIs = playlist.map((ele) => ele.uri);
+  }
+
+  getURIs();
+
+  const paramAddTracks = {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${access_token}`
+    },
+    body: JSON.stringify({
+      "uris": arrayOfURIs
+    })
+  }
+
+  try {
+    const response = await fetch(`https://api.spotify.com/v1/users/3143qbvhf3iu6jkeoyy4z77jsxlu/playlists`, param);
+    const data = await response.json();
+    const playlistId = data.id;
+
+    await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, paramAddTracks);
+
+    alert('The playlist has been created!');
+
+  } catch (e) {
+    console.log("Unable to create Playlist. Reason: " + e);
+  }
+}
 
 
 //                        ------------- RETURN ------------- 
 
-  return (
-    status !== 'blob' ?
-      <div className="App">
-        <Header />
-        <SearchBar value={search} handleSearch={handleSearch} Search={Search} />
-        <div className="main">
-          <TrackList response={responseArray} add={addToPlaylist} music={music} setMusic={setMusic} playPause={playPause} />
-          <PlayList playlist={playlist} remove={removeFromPlaylist} music={music} setMusic={setMusic} playlistHeader={playlistHeader} handlePlaylistHeader={handlePlaylistHeader} requestAuth={requestAuth} createPlaylist={createPlaylist} playPause={playPause} />
-        </div>
+return (
+  status !== 'blob' ?
+    <div className="App">
+      <Header />
+      <SearchBar value={search} handleSearch={handleSearch} Search={Search} />
+      <div className="main">
+        <audio src={currentPlay !== null ? currentPlay.preview_url : {}} ref={reffer} ></audio>
+        <TrackList response={responseArray} add={addToPlaylist} music={music} setMusic={setMusic} playPause={playPause} />        
+        <PlayList playlist={playlist} remove={removeFromPlaylist} music={music} setMusic={setMusic} playlistHeader={playlistHeader} handlePlaylistHeader={handlePlaylistHeader} requestAuth={requestAuth} createPlaylist={createPlaylist} playPause={playPause} reffer={reffer} />
       </div>
-      :
-      <div className="Authorize" id="searchbar">
-        <button onClick={requestAuth}>Authorize</button>
-      </div>
-  );
+    </div>
+    :
+    <div className="Authorize" id="searchbar">
+      <button onClick={requestAuth}>Authorize</button>
+    </div>
+);
 }
 
 export default App;

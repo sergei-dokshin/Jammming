@@ -2,33 +2,33 @@ import React, { useRef } from 'react';
 import styles from './TrackInPlaylist.module.css';
 
 export default function TrackInPlaylist(props) {
-    const {index, name, artist, img, remove, track, setMusic, music, sound} = props;
-    const reffer = useRef(null);
+    const {index, name, artist, img, remove, track, setMusic, music, sound, playPause, reffer} = props;
+    //const reffer = useRef(null);
     
-    async function playPause() {
-        setMusic(!music);
-        if(music) {
-            reffer.current.pause();
-        }else{
-            try{
-                await reffer.current.play();
-            }catch(e){
-                console.log('paused!' + e)
-            }            
-        }
-    }
+    // async function playPause() {
+    //     setMusic(!music);
+    //     if(music) {
+    //         reffer.current.pause();
+    //     }else{
+    //         try{
+    //             await reffer.current.play();
+    //         }catch(e){
+    //             console.log('cannot play music! - ' + e)
+    //         }            
+    //     }
+    // }
 
     return (
         
         <div className={styles.trackDiv}> 
-            <audio src={sound} ref={reffer} ></audio>                               
+            {/* <audio src={sound} ref={reffer} ></audio>                                */}
             <span className={styles.spanNumber}>{index + 1}</span>
             <h4>{`${name}`}</h4>
             <p>{artist}</p>            
             <div className={styles.imgAlbum}>
                 {!music ? (
-                    <span id="playbutton" className={styles.Symbol} onClick={() => playPause(reffer)}>►</span>) : (
-                    <span id="pausebutton" className={styles.Symbol} onClick={() => playPause(reffer)}>॥</span>
+                    <span id="playbutton" className={styles.Symbol} onClick={() => playPause(track)}>►</span>) : (
+                    <span id="pausebutton" className={styles.Symbol} onClick={() => playPause(track)}>॥</span>
                 )}
             <img src={img} />
             </div>            
